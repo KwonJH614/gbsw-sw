@@ -6,6 +6,7 @@ import com.hooppath.domain.course.dto.LessonResponse;
 import com.hooppath.domain.course.entity.Course;
 import com.hooppath.domain.course.repository.CourseRepository;
 import com.hooppath.domain.course.repository.LessonRepository;
+import com.hooppath.domain.review.repository.ReviewRepository;
 import com.hooppath.global.exception.BusinessException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -21,15 +22,15 @@ public class CourseService {
 
     private final CourseRepository courseRepository;
     private final LessonRepository lessonRepository;
+    private final ReviewRepository reviewRepository;
 
-    // TODO: Phase 4에서 ReviewRepository 추가 후 실제 평균 별점/리뷰 수 연동
     public List<CourseListResponse> getList() {
         return courseRepository.findAll().stream()
                 .map(course -> CourseListResponse.of(
                         course,
                         lessonRepository.countByCourseId(course.getId()),
-                        0.0,
-                        0
+                        reviewRepository.avgRatingByCourseId(course.getId()),
+                        reviewRepository.countByCourseId(course.getId())
                 ))
                 .toList();
     }
@@ -44,7 +45,10 @@ public class CourseService {
                 .map(LessonResponse::from)
                 .toList();
 
-        return CourseDetailResponse.of(course, lessons, 0.0, 0);
+        double avgRating = reviewRepository.avgRatingByCourseId(id);
+        int reviewCount = reviewRepository.countByCourseId(id);
+
+        return CourseDetailResponse.of(course, lessons, avgRating, reviewCount);
     }
 
     public List<CourseListResponse> search(String keyword) {
@@ -52,8 +56,8 @@ public class CourseService {
                 .map(course -> CourseListResponse.of(
                         course,
                         lessonRepository.countByCourseId(course.getId()),
-                        0.0,
-                        0
+                        reviewRepository.avgRatingByCourseId(course.getId()),
+                        reviewRepository.countByCourseId(course.getId())
                 ))
                 .toList();
     }
