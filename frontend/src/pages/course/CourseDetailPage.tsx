@@ -46,9 +46,17 @@ export default function CourseDetailPage() {
 
   useEffect(() => {
     if (!enrolled || !id) return;
-    progressApi.getCourseProgress(courseId)
-      .then((res) => setCourseProgresses(res.data.data.lessons))
-      .catch(() => {});
+    const fetchProgress = () => {
+      progressApi.getCourseProgress(courseId)
+        .then((res) => setCourseProgresses(res.data.data.lessons))
+        .catch(() => {});
+    };
+    fetchProgress();
+
+    // 페이지로 돌아올 때마다 진도 갱신
+    const handleFocus = () => fetchProgress();
+    window.addEventListener('focus', handleFocus);
+    return () => window.removeEventListener('focus', handleFocus);
   }, [enrolled, id]);
 
   if (loading) {
