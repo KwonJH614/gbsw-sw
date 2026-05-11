@@ -18,13 +18,17 @@ public class CourseListResponse {
     private int reviewCount;
 
     public static CourseListResponse of(Course course, int lessonCount, double avgRating, int reviewCount) {
+        String instructorName = null;
+        if (course.getInstructor() != null && course.getInstructor().getUser() != null) {
+            instructorName = course.getInstructor().getUser().getNickname();
+        }
         return new CourseListResponse(
                 course.getId(),
                 course.getTitle(),
                 course.getDescription(),
                 course.getThumbnailUrl(),
                 course.getLevel().name(),
-                course.getInstructor().getUser().getNickname(),
+                instructorName,
                 lessonCount,
                 avgRating,
                 reviewCount

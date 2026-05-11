@@ -27,7 +27,7 @@ public class CourseDetailResponse {
                 course.getDescription(),
                 course.getThumbnailUrl(),
                 course.getLevel().name(),
-                InstructorResponse.from(course.getInstructor()),
+                course.getInstructor() != null ? InstructorResponse.from(course.getInstructor()) : null,
                 lessons,
                 avgRating,
                 reviewCount

@@ -3,6 +3,7 @@ package com.hooppath.domain.course.entity;
 import com.hooppath.domain.instructor.entity.Instructor;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -37,6 +38,9 @@ public class Course {
     @Column(nullable = false, length = 20)
     private Level level;
 
+    @Column(nullable = false)
+    private boolean isVisible = true;
+
     @Column(nullable = false, updatable = false)
     private LocalDateTime createdAt;
 
@@ -47,5 +51,40 @@ public class Course {
     @PrePersist
     protected void onCreate() {
         this.createdAt = LocalDateTime.now();
+    }
+
+    @Builder
+    public Course(Instructor instructor, String title, String description, String thumbnailUrl, Level level) {
+        this.instructor = instructor;
+        this.title = title;
+        this.description = description;
+        this.thumbnailUrl = thumbnailUrl;
+        this.level = level;
+    }
+
+    public static Course create(Instructor instructor, String title, String description, String thumbnailUrl, Level level) {
+        return Course.builder()
+                .instructor(instructor)
+                .title(title)
+                .description(description)
+                .thumbnailUrl(thumbnailUrl)
+                .level(level)
+                .build();
+    }
+
+    public void update(String title, String description, String thumbnailUrl, Level level) {
+        if (title != null) this.title = title;
+        if (description != null) this.description = description;
+        if (thumbnailUrl != null) this.thumbnailUrl = thumbnailUrl;
+        if (level != null) this.level = level;
+    }
+
+    public boolean isOwnedBy(Long instructorId) {
+        return this.instructor != null && this.instructor.getId().equals(instructorId);
+    }
+
+    // ── P2 추가 ──────────────────────────────────────
+    public void setVisible(boolean visible) {
+        this.isVisible = visible;
     }
 }

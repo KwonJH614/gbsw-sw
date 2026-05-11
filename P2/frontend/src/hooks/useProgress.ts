@@ -2,7 +2,7 @@ import { useEffect, useRef, useCallback } from 'react';
 import { progressApi } from '../api/progress.api';
 import { useProgressStore } from '../store/progressStore';
 
-export function useProgress(lessonId: number, duration: number) {
+export function useProgress(lessonId: number, _duration: number) {
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const currentPositionRef = useRef(0);
   const { setLessonProgress, getLessonProgress } = useProgressStore();

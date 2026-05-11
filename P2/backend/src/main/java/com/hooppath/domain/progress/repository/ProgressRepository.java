@@ -11,4 +11,6 @@ public interface ProgressRepository extends JpaRepository<Progress, Long> {
     List<Progress> findByUserIdAndLessonCourseId(Long userId, Long courseId);
     int countByUserIdAndLessonCourseId(Long userId, Long courseId);
     int countByUserIdAndLessonCourseIdAndCompletedTrue(Long userId, Long courseId);
+
+    boolean existsByLessonId(Long lessonId);
 }

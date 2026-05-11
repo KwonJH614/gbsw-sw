@@ -13,4 +13,8 @@ public class BusinessException extends RuntimeException {
         this.status = status;
         this.code = code;
     }
+
+    public static BusinessException of(P2ErrorCode e) {
+        return new BusinessException(e.getHttpStatus(), e.getCode(), e.getMessage());
+    }
 }

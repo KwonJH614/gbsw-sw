@@ -55,8 +55,8 @@ public class AuthService {
                     HttpStatus.UNAUTHORIZED, "INVALID_CREDENTIALS", "이메일 또는 비밀번호가 올바르지 않습니다.");
         }
 
-        String accessToken = jwtUtil.createAccessToken(user.getId(), user.getEmail());
-        String refreshToken = jwtUtil.createRefreshToken(user.getId(), user.getEmail());
+        String accessToken = jwtUtil.createAccessToken(user.getId(), user.getEmail(), user.getRole().name());
+        String refreshToken = jwtUtil.createRefreshToken(user.getId(), user.getEmail(), user.getRole().name());
 
         addRefreshTokenCookie(response, refreshToken);
 
@@ -87,8 +87,8 @@ public class AuthService {
                 .orElseThrow(() -> new BusinessException(
                         HttpStatus.UNAUTHORIZED, "UNAUTHORIZED", "존재하지 않는 사용자입니다."));
 
-        String newAccessToken = jwtUtil.createAccessToken(user.getId(), user.getEmail());
-        String newRefreshToken = jwtUtil.createRefreshToken(user.getId(), user.getEmail());
+        String newAccessToken = jwtUtil.createAccessToken(user.getId(), user.getEmail(), user.getRole().name());
+        String newRefreshToken = jwtUtil.createRefreshToken(user.getId(), user.getEmail(), user.getRole().name());
 
         addRefreshTokenCookie(response, newRefreshToken);
 

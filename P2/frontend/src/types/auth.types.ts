@@ -1,7 +1,10 @@
+export type Role = 'STUDENT' | 'INSTRUCTOR' | 'ADMIN';
+
 export interface User {
   id: number;
   email: string;
   nickname: string;
+  role: Role;
   createdAt: string;
 }
 

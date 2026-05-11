@@ -25,19 +25,20 @@ public class JwtUtil {
         this.refreshExpiration = refreshExpiration;
     }
 
-    public String createAccessToken(Long userId, String email) {
-        return createToken(userId, email, accessExpiration, "access");
+    public String createAccessToken(Long userId, String email, String role) {
+        return createToken(userId, email, role, accessExpiration, "access");
     }
 
-    public String createRefreshToken(Long userId, String email) {
-        return createToken(userId, email, refreshExpiration, "refresh");
+    public String createRefreshToken(Long userId, String email, String role) {
+        return createToken(userId, email, role, refreshExpiration, "refresh");
     }
 
-    private String createToken(Long userId, String email, long expiration, String type) {
+    private String createToken(Long userId, String email, String role, long expiration, String type) {
         Date now = new Date();
         return Jwts.builder()
                 .subject(String.valueOf(userId))
                 .claim("email", email)
+                .claim("role", role)
                 .claim("type", type)
                 .issuedAt(now)
                 .expiration(new Date(now.getTime() + expiration))
@@ -68,6 +69,10 @@ public class JwtUtil {
 
     public String getTokenType(String token) {
         return parseClaims(token).get("type", String.class);
+    }
+
+    public String getRole(String token) {
+        return parseClaims(token).get("role", String.class);
     }
 
     public long getRefreshExpiration() {

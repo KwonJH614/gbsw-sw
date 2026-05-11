@@ -35,4 +35,12 @@ public class Instructor {
     protected void onCreate() {
         this.createdAt = LocalDateTime.now();
     }
+
+    public static Instructor create(User user, String bio, String career) {
+        Instructor instructor = new Instructor();
+        instructor.user = user;
+        instructor.bio = bio;
+        instructor.career = career;
+        return instructor;
+    }
 }

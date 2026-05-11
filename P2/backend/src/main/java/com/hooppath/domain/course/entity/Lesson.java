@@ -2,6 +2,7 @@ package com.hooppath.domain.course.entity;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -39,5 +40,34 @@ public class Lesson {
     @PrePersist
     protected void onCreate() {
         this.createdAt = LocalDateTime.now();
+    }
+
+    @Builder
+    public Lesson(Course course, String title, String videoUrl, Integer duration, Integer orderIndex) {
+        this.course = course;
+        this.title = title;
+        this.videoUrl = videoUrl;
+        this.duration = duration;
+        this.orderIndex = orderIndex;
+    }
+
+    public static Lesson create(Course course, String title, String videoUrl, Integer duration, Integer orderIndex) {
+        return Lesson.builder()
+                .course(course)
+                .title(title)
+                .videoUrl(videoUrl)
+                .duration(duration)
+                .orderIndex(orderIndex)
+                .build();
+    }
+
+    public void update(String title, String videoUrl, Integer duration) {
+        if (title != null) this.title = title;
+        if (videoUrl != null) this.videoUrl = videoUrl;
+        if (duration != null) this.duration = duration;
+    }
+
+    public void updateOrderIndex(int orderIndex) {
+        this.orderIndex = orderIndex;
     }
 }

@@ -1,5 +1,6 @@
 package com.hooppath.domain.user.dto;
 
+import com.hooppath.domain.user.entity.Role;
 import com.hooppath.domain.user.entity.User;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -12,6 +13,7 @@ public class UserResponse {
     private Long id;
     private String email;
     private String nickname;
+    private Role role;
     private LocalDateTime createdAt;
 
     public static UserResponse from(User user) {
@@ -19,6 +21,7 @@ public class UserResponse {
                 user.getId(),
                 user.getEmail(),
                 user.getNickname(),
+                user.getRole(),
                 user.getCreatedAt()
         );
     }

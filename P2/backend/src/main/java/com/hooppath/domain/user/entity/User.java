@@ -30,15 +30,36 @@ public class User extends BaseTimeEntity {
     @Column(nullable = false, length = 20)
     private Role role = Role.STUDENT;
 
+    @Column(nullable = false)
+    private boolean isSuspended = false;
+
     @Builder
     public User(String email, String password, String nickname) {
         this.email = email;
         this.password = password;
         this.nickname = nickname;
         this.role = Role.STUDENT;
+        this.isSuspended = false;
     }
 
     public void updateNickname(String nickname) {
         this.nickname = nickname;
+    }
+
+    public void changeRole(Role role) {
+        this.role = role;
+    }
+
+    // ── P2 추가 ──────────────────────────────────────
+    public void promoteToInstructor() {
+        this.role = Role.INSTRUCTOR;
+    }
+
+    public void changeRole(String role) {
+        this.role = Role.valueOf(role);
+    }
+
+    public void setSuspended(boolean suspended) {
+        this.isSuspended = suspended;
     }
 }
