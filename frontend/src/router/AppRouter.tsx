@@ -19,6 +19,7 @@ import InstructorApplyPage from '../pages/instructor/InstructorApplyPage';
 import StudentDashboardPage from '../pages/dashboard/StudentDashboardPage';
 import AdminInstructorApprovalPage from '../pages/admin/AdminInstructorApprovalPage';
 import { AdminDashboardPage, UserManagePage, AdminCoursePage, AuditLogPage } from '../pages/admin/AdminPages';
+import NotificationLogPage from '../pages/admin/NotificationLogPage';
 
 const router = createBrowserRouter([
   // 일반 레이아웃 (헤더+푸터)
@@ -65,6 +66,7 @@ const router = createBrowserRouter([
       { path: '/admin/courses',      element: <AdminCoursePage /> },
       { path: '/admin/applications', element: <AdminInstructorApprovalPage /> },
       { path: '/admin/audit-logs',   element: <AuditLogPage /> },
+      { path: '/admin/notification-logs', element: <NotificationLogPage /> },
     ],
   },
 ]);

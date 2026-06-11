@@ -7,7 +7,7 @@ export function AdminDashboardPage() {
   const [counts, setCounts] = useState({ users: 0, courses: 0, pending: 0 });
   useEffect(() => {
     Promise.all([
-      listUsers().then(u => u.length),
+      listUsers().then(u => u.totalElements),
       listAdminCourses().then(c => c.length),
       listApplications('PENDING').then(a => a.length),
     ]).then(([users, courses, pending]) => setCounts({ users, courses, pending }));
@@ -35,16 +35,27 @@ export function UserManagePage() {
   const [users, setUsers] = useState<AdminUser[]>([]);
   const [q, setQ] = useState('');
   const [loading, setLoading] = useState(true);
-  const load = (query?: string) => { setLoading(true); listUsers(query).then(setUsers).finally(() => setLoading(false)); };
+  const [page, setPage] = useState(0);
+  const [totalPages, setTotalPages] = useState(0);
+  const load = (query?: string, requestedPage = page) => {
+    setLoading(true);
+    listUsers(query, undefined, undefined, requestedPage)
+      .then(result => {
+        setUsers(result.content);
+        setPage(result.number);
+        setTotalPages(result.totalPages);
+      })
+      .finally(() => setLoading(false));
+  };
   useEffect(() => { load(); }, []);
 
   return (
     <div className="max-w-6xl mx-auto px-6 py-10">
       <h1 className="text-2xl font-bold text-gray-900 mb-6">회원 관리</h1>
       <div className="flex gap-3 mb-6">
-        <input value={q} onChange={e => setQ(e.target.value)} onKeyDown={e => e.key === 'Enter' && load(q)}
+        <input value={q} onChange={e => setQ(e.target.value)} onKeyDown={e => e.key === 'Enter' && load(q, 0)}
           placeholder="이메일 또는 닉네임 검색" className="flex-1 border border-gray-300 rounded-xl px-4 py-2 text-sm" />
-        <button onClick={() => load(q)} className="px-4 py-2 bg-blue-600 text-white text-sm rounded-xl">검색</button>
+        <button onClick={() => load(q, 0)} className="px-4 py-2 bg-blue-600 text-white text-sm rounded-xl">검색</button>
       </div>
       {loading ? <p className="text-center text-gray-400">불러오는 중...</p> : (
         <div className="bg-white rounded-2xl border border-gray-200 overflow-hidden shadow-sm">
@@ -84,6 +95,11 @@ export function UserManagePage() {
           </table>
         </div>
       )}
+      <div className="mt-4 flex justify-center gap-3">
+        <button disabled={page === 0} onClick={() => load(q, page - 1)} className="rounded-lg border px-3 py-1 disabled:opacity-40">이전</button>
+        <span className="py-1 text-sm">{totalPages === 0 ? 0 : page + 1} / {totalPages}</span>
+        <button disabled={page + 1 >= totalPages} onClick={() => load(q, page + 1)} className="rounded-lg border px-3 py-1 disabled:opacity-40">다음</button>
+      </div>
     </div>
   );
 }

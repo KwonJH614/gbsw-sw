@@ -7,6 +7,7 @@ const NAV_ITEMS = [
   { to: '/admin/courses',      label: '강의 관리',   icon: '🎬' },
   { to: '/admin/applications', label: '강사 신청',   icon: '📝' },
   { to: '/admin/audit-logs',   label: '감사 로그',   icon: '📋' },
+  { to: '/admin/notification-logs', label: '알림 운영 로그', icon: 'N' },
 ];
 
 export default function AdminLayout() {

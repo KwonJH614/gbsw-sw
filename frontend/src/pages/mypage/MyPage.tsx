@@ -4,6 +4,7 @@ import { enrollmentApi } from '../../api/enrollment.api';
 import { useAuthStore } from '../../store/authStore';
 import Badge from '../../components/common/Badge';
 import type { EnrollmentItem } from '../../types/enrollment.types';
+import DiscordSubscriptionCard from '../../components/notification/DiscordSubscriptionCard';
 
 export default function MyPage() {
   const [enrollments, setEnrollments] = useState<EnrollmentItem[]>([]);
@@ -42,6 +43,8 @@ export default function MyPage() {
           {user.nickname} ({user.email})
         </p>
       )}
+
+      <DiscordSubscriptionCard />
 
       <h2 className="mb-4 text-xl font-bold">
         내 수강 목록

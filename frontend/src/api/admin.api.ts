@@ -28,8 +28,17 @@ export interface AuditLog {
   createdAt: string;
 }
 
-export const listUsers = (q?: string, role?: string, suspended?: boolean) =>
-  apiClient.get<{ data: AdminUser[] }>('/admin/users', { params: { q, role, suspended } }).then(r => r.data.data);
+export interface AdminUserPage {
+  content: AdminUser[];
+  number: number;
+  totalElements: number;
+  totalPages: number;
+  first: boolean;
+  last: boolean;
+}
+
+export const listUsers = (q?: string, role?: string, suspended?: boolean, page = 0) =>
+  apiClient.get<{ data: AdminUserPage }>('/admin/users', { params: { q, role, suspended, page, size: 20 } }).then(r => r.data.data);
 
 export const changeUserRole = (id: number, role: string) =>
   apiClient.patch(`/admin/users/${id}/role`, { role });
