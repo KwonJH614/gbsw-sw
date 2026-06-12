@@ -1,0 +1,49 @@
+services:
+  mysql:
+    image: mysql:8.4
+    container_name: hooppath-mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: hooppath
+      MYSQL_USER: hooppath
+      MYSQL_PASSWORD: hooppath
+      MYSQL_ROOT_PASSWORD: hooppath-root
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql-data:/var/lib/mysql
+
+  backend:
+    build:
+      context: ./backend
+    container_name: hooppath-backend
+    restart: unless-stopped
+    depends_on:
+      - mysql
+    environment:
+      SPRING_DATASOURCE_URL: "jdbc:mysql://mysql:3306/hooppath?serverTimezone=Asia/Seoul&characterEncoding=UTF-8"
+      SPRING_DATASOURCE_USERNAME: hooppath
+      SPRING_DATASOURCE_PASSWORD: hooppath
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+      JWT_SECRET: "change-this-local-secret-at-least-32-chars"
+      JWT_ACCESS_EXPIRATION: 3600000
+      JWT_REFRESH_EXPIRATION: 1209600000
+      APP_CORS_ALLOWED_ORIGINS: "http://localhost,http://localhost:5173"
+      NOTIFICATION_SCHEDULE_ENABLED: "true"
+      NOTIFICATION_SCHEDULE_CRON: "0 0 9 * * *"
+      NOTIFICATION_INACTIVE_DAYS: "7"
+    ports:
+      - "8080:8080"
+
+  frontend:
+    build:
+      context: ./frontend
+    container_name: hooppath-frontend
+    restart: unless-stopped
+    depends_on:
+      - backend
+    ports:
+      - "80:80"
+
+volumes:
+  mysql-data:
