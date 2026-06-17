@@ -149,6 +149,7 @@ jobs:
             NOTIFICATION_SCHEDULE_ENABLED=true
             NOTIFICATION_SCHEDULE_CRON=0 0 9 * * *
             NOTIFICATION_INACTIVE_DAYS=7
+            DISCORD_WEBHOOK_URL=${{ secrets.DISCORD_WEBHOOK_URL }}
             BACKEND_IMAGE=${{ env.BACKEND_IMAGE }}:${{ github.sha }}
             FRONTEND_IMAGE=${{ env.FRONTEND_IMAGE }}:${{ github.sha }}
             HTTP_PORT=${{ secrets.HTTP_PORT }}

@@ -27,6 +27,7 @@ app:
     schedule-enabled: ${NOTIFICATION_SCHEDULE_ENABLED:true}
     schedule-cron: "${NOTIFICATION_SCHEDULE_CRON:0 0 9 * * *}"
     inactive-days: ${NOTIFICATION_INACTIVE_DAYS:7}
+    demo-webhook-url: ${DISCORD_WEBHOOK_URL:}
 
 management:
   endpoints:
